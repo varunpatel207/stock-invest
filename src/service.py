@@ -80,6 +80,4 @@ class PortfolioService:
     def run(self) -> str:
         portfolios = self.crawl_portfolios()
         report_path = self.generate_report(portfolios)
-        if report_path:
-            self.send_report_email(report_path)
         return report_path
