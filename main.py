@@ -11,7 +11,10 @@ logger = logging.getLogger(__name__)
 
 def main():
     service = PortfolioService("resources/investors.csv")
-    service.run()
+    report_path = service.run()
+
+    if report_path:
+        service.send_report_email(report_path)
 
 
 if __name__ == '__main__':
