@@ -26,8 +26,8 @@ class Config:
         return value if value is not None else default
 
     def get_email_config(self) -> Dict[str, Any]:
-        smtp_server = os.getenv('SMTP_SERVER') or self.get('email.smtp_server')
-        smtp_port = os.getenv('SMTP_PORT') or self.get('email.smtp_port')
+        smtp_server = os.getenv('SMTP_SERVER') or self.get('email.smtp_server', 'smtp.gmail.com')
+        smtp_port = os.getenv('SMTP_PORT') or self.get('email.smtp_port', 587)
         sender_email = os.getenv('GMAIL_USER') or self.get('email.sender_email')
         sender_password = os.getenv('GMAIL_PASSWORD') or self.get('email.sender_password')
         recipient_email = os.getenv('RECIPIENT_EMAIL') or self.get('email.recipient_email')
