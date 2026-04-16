@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Report - {{ report_date }}</title>
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+
+        .header-section h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-section p {
+            margin: 0.25rem 0;
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .portfolio-section {
+            background: white;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            overflow: hidden;
+        }
+
+        .portfolio-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .portfolio-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .portfolio-header a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .portfolio-header a:hover {
+            text-decoration: underline;
+        }
+
+        .summary-info {
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .summary-info strong {
+            color: #333;
+        }
+
+        .holdings-section {
+            padding: 1rem;
+        }
+
+        .holdings-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .threshold-info {
+            background: #fff8e1;
+            border-left: 4px solid var(--warning-color);
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            color: #8b6914;
+        }
+
+        .table-responsive-custom {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .holdings-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .holdings-table th {
+            padding: 0.75rem;
+            font-weight: 600;
+            text-align: left;
+            border: none;
+        }
+
+        .holdings-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .holdings-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .ticker {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .ticker a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .ticker a:hover {
+            text-decoration: underline;
+        }
+
+        .company-name {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .currency {
+            font-family: 'Courier New', monospace;
+        }
+
+        .badge-custom {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-add {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-reduce {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .badge-neutral {
+            background-color: #e2e3e5;
+            color: #41464b;
+        }
+
+        .text-positive {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .text-negative {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .no-holdings {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .footer-section {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #6c757d;
+            font-size: 0.875rem;
+            border-top: 1px solid #dee2e6;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 576px) {
+            .header-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .header-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .portfolio-header {
+                padding: 1rem;
+            }
+
+            .portfolio-header h2 {
+                font-size: 1.25rem;
+            }
+
+            .summary-info {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .holdings-title {
+                font-size: 1.1rem;
+            }
+
+            .holdings-table th,
+            .holdings-table td {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .company-name {
+                display: none;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+
+            .portfolio-section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #dee2e6;
+            }
+
+            .header-section,
+            .portfolio-header {
+                background: none;
+                color: black;
+                border-bottom: 2px solid #dee2e6;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="header-section">
+            <h1>📊 Portfolio Report</h1>
+            <p><strong>High Conviction Holdings Analysis</strong></p>
+            <p>Generated on {{ report_date }}</p>
+        </div>
+
+        <!-- Portfolios -->
+        {% for portfolio in portfolios %}
+        <div class="portfolio-section">
+            <!-- Portfolio Header -->
+            <div class="portfolio-header">
+                <h2><a href="{{ portfolio.url }}" target="_blank">{{ portfolio.name }}</a></h2>
+            </div>
+
+            <!-- Summary Info -->
+            <div class="summary-info">
+                <div><strong>Total Value:</strong> ${{ "{:,.0f}".format(portfolio.total_value / 1_000_000) }}M</div>
+                <div><strong>Last Updated:</strong> {{ portfolio.last_updated }}</div>
+                <div>
+                    <strong>Total Holdings:</strong> {{ portfolio.num_holdings }} | <strong>High Conviction:</strong> {{ portfolio.high_conviction_count }}
+                </div>
+                <div><strong>Threshold:</strong> ≥{{ "%.2f"|format(portfolio.threshold) }}%</div>
+            </div>
+
+            <!-- Holdings Section -->
+            <div class="holdings-section">
+
+                {% if portfolio.high_conviction_holdings %}
+                <div class="table-responsive-custom">
+                    <table class="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>Ticker</th>
+                                <th>% Port</th>
+                                <th>Value</th>
+                                <th>Shares</th>
+                                <th>Price</th>
+                                <th>Chg %</th>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for holding in portfolio.high_conviction_holdings %}
+                            <tr>
+                                <td>
+                                    <div class="ticker"><a href="https://www.dataroma.com/m/stock.php?sym={{ holding.symbol }}" target="_blank">{{ holding.symbol }}</a></div>
+                                    <div class="company-name">{{ holding.stock_name }}</div>
+                                </td>
+                                <td>{{ "%.2f"|format(holding.percentage) }}%</td>
+                                <td class="currency">${{ "{:,.0f}".format(holding.value / 1_000_000) }}M</td>
+                                <td class="currency">{{ "{:,.0f}".format(holding.shares / 1_000_000) }}M</td>
+                                <td class="currency">${{ "{:,.0f}".format(holding.current_price) }}</td>
+                                <td class="{% if holding.price_direction == 'positive' %}text-positive{% else %}text-negative{% endif %}">
+                                    {% if holding.price_change_percent >= 0 %}+{% endif %}{{ "%.1f"|format(holding.price_change_percent) }}%
+                                </td>
+                                <td>
+                                    <span class="badge-custom badge-{{ holding.activity_type }}">
+                                        {{ holding.activity }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-holdings">No high conviction holdings found.</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Footer -->
+        <div class="footer-section">
+            <p>High conviction is determined by portfolio concentration: <strong>threshold = 100 / (number of holdings)</strong></p>
+            <p>This report displays the most significant positions held by each investor.</p>
+        </div>
+    </div>
+
+    <script src="../bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
